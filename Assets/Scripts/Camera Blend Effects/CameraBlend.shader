@@ -9,41 +9,42 @@ Shader "Hidden/Custom/CameraBlend"
         TEXTURE2D_SAMPLER2D(_BlendCamera , sampler_BlendCamera);
         int _BlendMode;
 
-
+        
+        // algorithms taken from: https://www.deepskycolors.com/archivo/2010/04/21/formulas-for-Photoshop-blending-modes.html
         float3 blend(float4 cam1, float4 cam2, int blendMode) {
             float3 col = cam1.rgb;
 
             // darken
             if(_BlendMode == 0) {
-
+                col = min(col, cam2.rgb);
             }
             // multiply 
             else if(_BlendMode == 1) {
-                
+                col *= cam2.rgb;
             }
             // color burn 
             else if(_BlendMode == 2) {
-                
+                col = float3(1,1,1) - (float3(1,1,1) - col) / cam2.rgb;
             }
             // linear burn 
             else if(_BlendMode == 3) {
-                
+                col += cam2.rgb - float3(1,1,1);
             }
             // lighten 
             else if(_BlendMode == 4) {
-                
+                col = max(col, cam2.rgb);
             }
             // screen 
             else if(_BlendMode == 5) {
-                
+                col = float3(1,1,1) - (float3(1,1,1) - col) * (float3(1,1,1) - cam2);
             }
             // color dodge 
             else if(_BlendMode == 6) {
-                
+                col /= float3(1,1,1) - cam2.rgb;
             }
             // linear dodge 
             else if(_BlendMode == 7) {
-                
+                col += cam2.rgb;
             }
             // overlay 
             else if(_BlendMode == 8) {

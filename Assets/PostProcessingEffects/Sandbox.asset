@@ -30,7 +30,7 @@ MonoBehaviour:
   enabled:
     overrideState: 1
     value: 1
-  blend:
+  blendMode:
     overrideState: 1
     value: 0
   camera:
