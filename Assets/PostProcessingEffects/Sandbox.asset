@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Sandbox
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 7282519328827828249}
---- !u!114 &7282519328827828249
+  - {fileID: 6491677991714584442}
+--- !u!114 &6491677991714584442
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23,13 +23,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cb709e093094864fa2a05da422ad825, type: 3}
-  m_Name: Grayscale
+  m_Script: {fileID: 11500000, guid: e5bd5175537812446a9176fe06407ec4, type: 3}
+  m_Name: CameraBlend
   m_EditorClassIdentifier: 
   active: 1
   enabled:
     overrideState: 1
     value: 1
   blend:
-    overrideState: 0
-    value: 0.5
+    overrideState: 1
+    value: 0
+  camera:
+    overrideState: 1
+    value: {fileID: 8400000, guid: 49c081fc3550349448605e78aa271063, type: 2}
+    defaultState: 1
