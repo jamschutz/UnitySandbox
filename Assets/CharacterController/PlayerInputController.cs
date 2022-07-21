@@ -26,7 +26,9 @@ namespace jsch
             // get mouse
             Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             // get joypad
-            Vector2 rightStickInput = new Vector2(Input.GetAxisRaw("Right Stick X"), Input.GetAxisRaw("Right Stick Y")) * rightStickSensitivity;
+            // TODO!!!!
+            // Vector2 rightStickInput = new Vector2(Input.GetAxisRaw("Right Stick X"), Input.GetAxisRaw("Right Stick Y")) * rightStickSensitivity;
+            Vector2 rightStickInput = new Vector2(0, 0);
 
             // pass right stick values in place of mouse if we can
             Vector2 camera = new Vector2(
