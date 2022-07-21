@@ -32,8 +32,8 @@ MonoBehaviour:
     value: 1
   blendMode:
     overrideState: 1
-    value: 0
+    value: 6
   camera:
     overrideState: 1
-    value: {fileID: 8400000, guid: 49c081fc3550349448605e78aa271063, type: 2}
+    value: {fileID: 8400000, guid: 400bbc4e2f56c484aadef999c8ec9508, type: 2}
     defaultState: 1
