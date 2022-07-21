@@ -25,6 +25,7 @@ namespace jsch
         private CharacterController controller;
         private PlayerInputController input;
 
+        private Vector3 lastInputMovement;
         private float currentMoveLerp;
 
 
@@ -38,6 +39,7 @@ namespace jsch
             input = GetComponent<PlayerInputController>();
 
             currentMoveLerp = 0;
+            lastInputMovement = Vector3.zero;
         }
 
 
@@ -50,18 +52,25 @@ namespace jsch
         void Move()
         {
             float currentSpeed;
+            Vector3 currentMovement;
 
             // get our current speed
             if(input.Current.Movement.sqrMagnitude > 0) {
                 currentMoveLerp = Mathf.Clamp(currentMoveLerp + Time.deltaTime / rampUpTime, 0, 1);
                 currentSpeed = rampUp.Evaluate(currentMoveLerp) * moveSpeed;
+                currentMovement = input.Current.Movement.normalized * currentSpeed;
+                lastInputMovement = input.Current.Movement.normalized;
             }
             else {
                 currentMoveLerp = Mathf.Clamp(currentMoveLerp - Time.deltaTime / rampDownTime, 0, 1);
-                currentSpeed = (1.0f - rampDown.Evaluate(currentMoveLerp)) * moveSpeed;
+                currentSpeed = rampDown.Evaluate(currentMoveLerp) * moveSpeed;
+                currentMovement = lastInputMovement * currentSpeed;
+                // currentMovement = Vector2.zero;
             }
 
-            controller.Move(input.Current.Movement.normalized * currentSpeed * Time.deltaTime);
+            Debug.Log($"lerp: {currentMoveLerp}  speed: {currentSpeed}");
+
+            controller.Move(currentMovement * Time.deltaTime);
         }
     }
 }
