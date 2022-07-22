@@ -38,17 +38,21 @@ namespace jsch
         // physics helpers
         private const float MAX_IS_GROUNDED_DISTANCE = 0.1f;
         private float verticalVelocity;
+        private bool isGrounded;
 
 
     // =============================================================== //
     // =========     Lifecycle Methods      ========================== //
     // =============================================================== //
 
-        void Start()
+        void Awake()
         {
             controller = GetComponent<CharacterController>();
             input = GetComponent<PlayerInputController>();
+        }
 
+        void Start()
+        {
             currentMoveLerp = 0;
             lastInputMovement = Vector3.zero;
             verticalVelocity = 0;
@@ -57,7 +61,11 @@ namespace jsch
 
         void Update()
         {
+            // perform grounded check once per frame
+            isGrounded = IsGrounded();
+
             Move();
+            ApplyGravity();
         }
 
 
@@ -66,7 +74,7 @@ namespace jsch
             Vector3 currentMovement;
 
             // if we're currently moving, move!
-            if(input.Current.Movement.sqrMagnitude > 0) {
+            if(input.Current.GotMovementInput) {
                 currentMoveLerp = Mathf.Clamp(currentMoveLerp + Time.deltaTime / rampUpTime, 0, 1);
                 float currentSpeed = rampUp.Evaluate(currentMoveLerp) * moveSpeed;
                 currentMovement = input.Current.Movement.normalized * currentSpeed;
@@ -82,13 +90,10 @@ namespace jsch
             }
 
             // apply jump
-            ApplyGravity();
-            if(IsGrounded() && input.Current.Jump) {
+            if(isGrounded && input.Current.Jump) {
                 
                 verticalVelocity += jumpPower;
             }
-
-            Debug.Log($"jump: {input.Current.Jump} isgrounded: {IsGrounded()}");
 
             currentMovement.y = verticalVelocity;
             controller.Move(currentMovement * Time.deltaTime);
@@ -101,8 +106,8 @@ namespace jsch
 
         void ApplyGravity()
         {
-            if(IsGrounded())  {
-                verticalVelocity = 0;
+            if(isGrounded && verticalVelocity < 0)  {
+                verticalVelocity = -2f;
                 return;
             }
 
@@ -112,7 +117,10 @@ namespace jsch
 
         bool IsGrounded()
         {
-            return Physics.Raycast(transform.position, Vector3.down, MAX_IS_GROUNDED_DISTANCE, groundLayerMask);
+            // set feet position to center of object, minus half the character controller's height
+            Vector3 feetPosition = transform.position - (Vector3.up * (controller.height * 0.5f));
+            // check if we're grounded
+            return Physics.CheckSphere(feetPosition, MAX_IS_GROUNDED_DISTANCE, groundLayerMask);
         }
     }
 }
