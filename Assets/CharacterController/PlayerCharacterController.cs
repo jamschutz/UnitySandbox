@@ -106,6 +106,7 @@ namespace jsch
 
         void ApplyGravity()
         {
+            // reset velocity if grounded
             if(isGrounded && verticalVelocity < 0)  {
                 verticalVelocity = -2f;
                 return;
