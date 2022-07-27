@@ -57,7 +57,7 @@ namespace jsch
             yRotation += input.Current.Camera.y;
 
             // update look direction along the y axis
-            lookDirection = Quaternion.AngleAxis(input.Current.Camera.x * Time.deltaTime, player.up) * lookDirection;
+            lookDirection = Quaternion.AngleAxis(input.Current.Camera.x, player.up) * lookDirection;
 
             // get left direction in camera space
             Vector3 leftCamSpace = Vector3.Cross(lookDirection, player.up);
